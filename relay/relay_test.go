@@ -5,12 +5,18 @@ import (
 	"testing"
 )
 
+var irkit *Irkit
+
+func init() {
+	irkit = New()
+}
+
 func TestGetIPAddress(t *testing.T) {
-	GetIPAddress()
+	irkit.GetIPAddress()
 }
 
 func TestRequestClientToken(t *testing.T) {
-	token, err := RequestClientToken()
+	token, err := irkit.RequestClientToken()
 	if err != nil {
 		t.Fail()
 	}
@@ -18,7 +24,7 @@ func TestRequestClientToken(t *testing.T) {
 }
 
 func TestGetMessage(t *testing.T) {
-	message, err := GetMessages()
+	message, err := irkit.GetMessages()
 	if err != nil {
 		t.Fail()
 	}
@@ -26,7 +32,7 @@ func TestGetMessage(t *testing.T) {
 }
 func TestSendMessaget(t *testing.T) {
 	var data = `{"format":"raw","freq":38,"data":[17421,8755,1190,1037,1190,1037,1190,1037,1190,1037,1190,1037,1190,1037,1190,3228,1190,1037,1150,3228,1190,3228,1190,3228,1190,3228,1190,3228,1190,3228,1190,1037,1150,3228,1150,1037,1190,3228,1190,1037,1190,1037,1190,3228,1150,1037,1190,1037,1190,1037,1190,3228,1190,1037,1190,3228,1190,3228,1190,1037,1190,3228,1150,3228,1150,3228,1150,65535,0,13693,17421,4400,1150]}`
-	err := SendMessage(data)
+	err := irkit.SendMessage(data)
 	if err != nil {
 		t.Fail()
 	}
