@@ -8,6 +8,8 @@ import (
 	"github.com/mogeta/irkit/relay"
 )
 
+var irkit *relay.Irkit
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, World")
 }
@@ -22,7 +24,7 @@ type Output struct {
 
 func jsonHandleFunc(rw http.ResponseWriter, req *http.Request) {
 
-	output := Output{relay.GetIPAddress()}
+	output := Output{irkit.GetIPAddress()}
 	outjson, err := json.Marshal(output)
 	if err != nil {
 		fmt.Println(err)
@@ -32,7 +34,7 @@ func jsonHandleFunc(rw http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	relay.GetIPAddress()
+	irkit = relay.New()
 
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/api", jsonHandleFunc)

@@ -14,10 +14,15 @@ import (
 	"github.com/soh335/go-mdns"
 )
 
-var address string
+//Irkit is infrared remote controller http://getirkit.com/
+type Irkit struct {
+	Address string
+}
 
-func init() {
+// New is create Irkit struct
+func New() *Irkit {
 	var irkitName = "_irkit._tcp.local."
+	var address = ""
 	client := new(mdns.Client)
 	client.Discover(irkitName, func(msg *dns.Msg) {
 		for _, rr := range msg.Extra {
@@ -29,11 +34,12 @@ func init() {
 			}
 		}
 	})
+	return &Irkit{address}
 }
 
 //SendMessage is ...
-func SendMessage(data string) error {
-	url := address + "/messages"
+func (irkit *Irkit) SendMessage(data string) error {
+	url := irkit.Address + "/messages"
 	req, _ := http.NewRequest("POST", url, bytes.NewBufferString(data))
 	req.Header.Set("X-Requested-With", "curl")
 
@@ -48,8 +54,8 @@ func SendMessage(data string) error {
 }
 
 //GetMessages get a Infrared data from irkit.
-func GetMessages() (string, error) {
-	url := address + "/messages"
+func (irkit *Irkit) GetMessages() (string, error) {
+	url := irkit.Address + "/messages"
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("X-Requested-With", "curl")
 
@@ -72,8 +78,8 @@ func GetMessages() (string, error) {
 }
 
 //RequestClientToken request irkit client token
-func RequestClientToken() (string, error) {
-	url := address + "/keys"
+func (irkit *Irkit) RequestClientToken() (string, error) {
+	url := irkit.Address + "/keys"
 	req, _ := http.NewRequest("POST", url, nil)
 	req.Header.Set("X-Requested-With", "curl")
 
@@ -111,6 +117,6 @@ func RequestClientToken() (string, error) {
 }
 
 //GetIPAddress get irkit server address
-func GetIPAddress() string {
-	return address
+func (irkit *Irkit) GetIPAddress() string {
+	return irkit.Address
 }
