@@ -25,3 +25,5 @@ _testmain.go
 
 server/gin-bin
 .vscode
+debug
+config.json
